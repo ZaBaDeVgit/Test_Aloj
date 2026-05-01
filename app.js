@@ -9,10 +9,17 @@
   };
   const UL = {'U1':'Unidad 1','U2':'Unidad 2','U3':'Unidad 3','U4':'Unidad 4','U5':'Unidad 5','U6':'Unidad 6','U7':'Unidad 7','U8':'Unidad 8','U9':'Unidad 9','Semestral':'Semestral'};
 
-  let Q=[], S={view:'home',sub:null,unit:null,idx:0,ans:{},shuf:[],errMode:false,errQ:[]};
+  let Q=[], S={view:'intro',sub:null,unit:null,idx:0,ans:{},shuf:[],errMode:false,errQ:[]};
   const el=document.getElementById('app');
+  let modalCallback=null;
 
-  function load(){fetch('questions.json').then(r=>r.json()).then(d=>{Q=d;render()}).catch(()=>{el.innerHTML='<div class="loader"><div class="loader-inner"><p style="color:#fda4af">Error cargando preguntas</p></div></div>'})}
+  function showIntro(){el.innerHTML=`<div class="intro"><div class="intro-content"><div class="intro-icon">🎓</div><h1 class="gradient-text">Test Practica</h1><p>Practica los test de tu ciclo formativo</p><button class="intro-btn" onclick="App.startApp()">Comenzar</button></div></div>`}
+  function startApp(){showLoader();loadData()}
+  function showLoader(){el.innerHTML='<div class="loader"><div class="loader-inner"><div class="spinner"></div><p>Cargando preguntas...</p></div></div>'}
+  function loadData(){fetch('questions.json').then(r=>r.json()).then(d=>{Q=d;S.view='home';render()}).catch(()=>{el.innerHTML='<div class="loader"><div class="loader-inner"><p style="color:#fda4af">Error cargando preguntas</p><button class="btn btn-primary" onclick="App.startApp()" style="margin-top:12px">Reintentar</button></div></div>'})}
+  function showModal(icon,title,text,confirmText,cancelText,onConfirm){modalCallback=onConfirm;el.insertAdjacentHTML('beforeend',`<div class="modal-overlay" onclick="App.closeModal(event)"><div class="modal" onclick="event.stopPropagation()"><div class="modal-icon">${icon}</div><h3>${title}</h3><p>${text}</p><div class="modal-btns"><button class="btn btn-ghost" onclick="App.closeModal()">${cancelText}</button><button class="btn btn-danger" onclick="App.confirmModal()">${confirmText}</button></div></div></div>`)}
+  function closeModal(e){if(e&&e.target!==e.currentTarget)return;const m=document.querySelector('.modal-overlay');if(m)m.remove();modalCallback=null}
+  function confirmModal(){if(modalCallback)modalCallback();closeModal()}
 
   function subs(){const m={};Q.forEach(q=>{if(!m[q.subject])m[q.subject]=new Set();m[q.subject].add(q.unit)});return Object.entries(m).map(([n,u])=>({name:n,units:[...u].sort((a,b)=>(parseInt(a.replace('U',''))||(a==='Semestral'?99:0))-(parseInt(b.replace('U',''))||(b==='Semestral'?99:0)))}))}
   function qs(sub,u){const g=Q.find(q=>q.subject===sub&&q.unit===u);return g?g.questions:[]}
@@ -129,13 +136,16 @@
     nextQuestion(){if(S.idx<(S.errMode?S.errQ:S.shuf).length-1){S.idx++;render()}},
     prevQuestion(){if(S.idx>0){S.idx--;render()}},
     finishQuiz(){S.view='results';render()},
-    exitQuiz(){if(confirm('¿Seguro que quieres salir?')){S.view='subject';render()}},
+    exitQuiz(){showModal('🚪','¿Salir del test?','Se perderá el progreso de esta sesión.','Salir','Continuar',()=>{S.view='subject';render()})},
     retryQuiz(){S.errMode=false;const q=S.unit==='all'?allQs(S.sub):qs(S.sub,S.unit);S.shuf=shuf(q);S.idx=0;S.ans={};S.view='quiz';render()},
     retryErrors(){const qa=S.errMode?S.errQ:S.shuf,er=[];qa.forEach((q,i)=>{if(S.ans[i]!==q.correctAnswer)er.push(q)});if(!er.length){S.view='subject';render();return}S.errMode=true;S.errQ=shuf(er);S.idx=0;S.ans={};S.view='quiz';render()},
     goSubject(){S.errMode=false;S.view='subject';render()},
     viewStats(){S.view='stats';render()},
-    clearStats(){clearAll()}
+    clearStats(){showModal('🗑️','¿Borrar estadísticas?','Se eliminarán todos tus progresos y errores guardados.','Borrar','Cancelar',clearAll)},
+    startApp(){startApp()},
+    closeModal(e){closeModal(e)},
+    confirmModal(){confirmModal()}
   };
 
-  load();
+  showIntro();
 })();

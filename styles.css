@@ -230,3 +230,23 @@ a { color: inherit; text-decoration: none; }
 .spinner { width: 40px; height: 40px; border: 3px solid rgba(100,116,139,0.2); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loader p { color: var(--text2); font-size: 0.875rem; }
+
+/* Intro screen */
+.intro { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 1000; }
+.intro-content { text-align: center; animation: introIn 0.8s ease-out; }
+@keyframes introIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.intro-icon { font-size: 4rem; margin-bottom: 16px; animation: introBounce 1.5s ease infinite; }
+@keyframes introBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.intro h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
+.intro p { color: var(--text2); font-size: 0.875rem; margin-bottom: 24px; }
+.intro-btn { background: linear-gradient(135deg, var(--blue), var(--violet)); color: #fff; padding: 12px 32px; border-radius: var(--radius); font-weight: 600; font-size: 0.9375rem; transition: transform 0.15s, box-shadow 0.15s; }
+.intro-btn:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(59,130,246,0.35); }
+
+/* Modal overlay */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.2s ease; padding: 16px; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius2); padding: 24px; max-width: 340px; width: 100%; text-align: center; animation: slideUp 0.25s ease; }
+.modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.modal h3 { font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.modal p { color: var(--text2); font-size: 0.8125rem; margin-bottom: 20px; line-height: 1.5; }
+.modal-btns { display: flex; gap: 10px; justify-content: center; }
+.modal-btns .btn { flex: 1; justify-content: center; }
