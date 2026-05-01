@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Practica - Alojamiento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+            emerald: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' },
+            rose: { 50:'#fff1f2',100:'#ffe4e6',200:'#fecdd3',300:'#fda4af',400:'#fb7185',500:'#f43f5e',600:'#e11d48',700:'#be123c',800:'#9f1239',900:'#881337' },
+            amber: { 50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f' },
+            violet: { 50:'#f5f3ff',100:'#ede9fe',200:'#ddd6fe',300:'#c4b5fd',400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9',800:'#5b21b6',900:'#4c1d95' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(148, 163, 184, 0.1); }
+    .glass-light { background: rgba(51, 65, 85, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.08); }
+    .gradient-text { background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .option-btn { transition: all 0.2s ease; }
+    .option-btn:hover:not(.disabled) { transform: scale(1.02); }
+    .option-btn.selected { border-color: #3b82f6; background: rgba(59, 130, 246, 0.15); }
+    .option-btn.correct { border-color: #10b981; background: rgba(16, 185, 129, 0.15); }
+    .option-btn.incorrect { border-color: #f43f5e; background: rgba(244, 63, 94, 0.15); }
+    .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+    .option-btn.correct.disabled, .option-btn.incorrect.disabled { opacity: 1; }
+    .progress-bar { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    .slide-up { animation: slideUp 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } 50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); } }
+    .pulse-glow { animation: pulse-glow 2s infinite; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .subject-card { position: relative; overflow: hidden; }
+    .subject-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 9999px; }
+    .subject-card.events::before { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+    .subject-card.estructura::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+    .subject-card.pisos::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .subject-card.empleabilidad::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+    .stat-ring { position: relative; width: 80px; height: 80px; }
+    .stat-ring svg { transform: rotate(-90deg); }
+    .stat-ring .ring-bg { stroke: rgba(148, 163, 184, 0.1); }
+    .stat-ring .ring-fill { transition: stroke-dashoffset 1s ease; }
+    .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+    @media (max-width: 640px) {
+      .mobile-stack { flex-direction: column; }
+    }
+  </style>
+</head>
+<body class="scrollbar-hide">
+  <div id="app" class="min-h-screen"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
